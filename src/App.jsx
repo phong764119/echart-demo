@@ -15,6 +15,66 @@ const getTime = (n, t) => {
       return 0;
   }
 };
+const bar_times = [getTime(12, "h")];
+const bar_values = [];
+const line_data = [];
+while (bar_times[bar_times.length - 1] < getTime(20, "h")) {
+  let n = bar_times[bar_times.length - 1] + getTime(5, "m");
+  //
+  bar_times.push(n);
+  n = n - getTime(5, "m");
+  if (
+    n < getTime(13, "h") ||
+    (n >= getTime(15, "h") + getTime(10, "m") &&
+      n < getTime(15, "h") + getTime(20, "m")) ||
+    (n >= getTime(16, "h") && n < getTime(16, "h") + getTime(40, "m")) ||
+    (n >= getTime(17, "h") + getTime(5, "m") &&
+      n < getTime(17, "h") + getTime(10, "m")) ||
+    (n >= getTime(19, "h") + getTime(10, "m") &&
+      n < getTime(19, "h") + getTime(20, "m")) ||
+    n > getTime(19, "h") + getTime(30, "m")
+  ) {
+    bar_values.push(0);
+    line_data.push(0);
+  } else {
+    line_data.push(80);
+  }
+  if (n >= getTime(13, "h") && n < getTime(13, "h") + getTime(100, "m")) {
+    bar_values.push(80 + Math.floor(Math.random() * 11));
+  }
+  if (
+    n >= getTime(13, "h") + getTime(100, "m") &&
+    n < getTime(15, "h") + getTime(10, "m")
+  ) {
+    bar_values.push(80 - Math.floor(Math.random() * 11));
+  }
+
+  if (n >= getTime(15, "h") + getTime(20, "m") && n < getTime(16, "h")) {
+    bar_values.push(80 + Math.floor(Math.random() * 11));
+  }
+
+  if (
+    n >= getTime(16, "h") + getTime(40, "m") &&
+    n < getTime(17, "h") + getTime(5, "m")
+  ) {
+    bar_values.push(80 + Math.floor(Math.random() * 11));
+  }
+
+  if (
+    n >= getTime(17, "h") + getTime(10, "m") &&
+    n < getTime(19, "h") + getTime(10, "m")
+  ) {
+    bar_values.push(80 + Math.floor(Math.random() * 11));
+  }
+
+  if (
+    n >= getTime(19, "h") + getTime(20, "m") &&
+    n < getTime(19, "h") + getTime(30, "m")
+  ) {
+    bar_values.push(80 - Math.floor(Math.random() * 11));
+  }
+}
+
 function convertMillisecToHHMM(milliseconds) {
   // Calculate the total number of hours
   const totalHours = Math.floor(milliseconds / (1000 * 60 * 60));
@@ -256,70 +316,134 @@ function App() {
         text: "Profile",
         left: "center",
       },
+      axisPointer: {
+        link: [
+          {
+            xAxisIndex: [0, 1],
+          },
+        ],
+      },
       dataZoom: [
         {
           type: "inside",
-          filterMode: "weakFilter",
+          xAxisIndex: [0, 1],
         },
       ],
-      grid: {
-        height: 300,
-      },
-      xAxis: {
-        min: getTime(12, "h"),
-        scale: true,
-        position: "top",
-        axisLine: {
-          show: true,
+      grid: [
+        {
+          height: 300,
         },
-        minorTick: {
-          show: true,
-          length: 4,
+        {
+          top: 380,
+          height: 100,
         },
-        axisTick: {
-          show: true,
-          length: 8,
-          alignWithLabel: true,
-        },
-        splitLine: {
-          show: true,
-        },
-        interval: getTime(1, "h"),
+      ],
+      xAxis: [
+        {
+          gridIndex: 0,
+          min: getTime(12, "h"),
+          max: getTime(20, "h"),
+          scale: true,
+          position: "top",
+          axisLine: {
+            show: true,
+          },
+          minorTick: {
+            show: true,
+            length: 4,
+          },
+          axisTick: {
+            show: true,
+            length: 8,
+            alignWithLabel: true,
+          },
+          splitLine: {
+            show: true,
+          },
+          interval: getTime(1, "h"),
 
-        axisLabel: {
-          formatter: function (val) {
-            return convertMillisecToHHMM(val);
+          axisLabel: {
+            formatter: function (val) {
+              return convertMillisecToHHMM(val);
+            },
           },
         },
-      },
-      yAxis: {
-        data: categories,
-        type: "category",
-        axisLine: {
-          show: true,
+        {
+          scale: true,
+          gridIndex: 1,
+          data: bar_times,
+          boundaryGap: true,
+          axisLabel: {
+            show: false,
+          },
+          axisTick: { show: false },
+          axisLine: { show: false },
         },
-        // interval: 1,
-        splitLine: {
-          show: true,
+      ],
+      yAxis: [
+        {
+          // scale: true,
+          data: categories,
+          type: "category",
+          axisLine: {
+            show: true,
+          },
+          // interval: 1,
+          splitLine: {
+            show: true,
+          },
+          axisTick: {
+            show: false,
+            // alignWithLabel: true,
+          },
         },
-        axisTick: {
-          show: false,
-          // alignWithLabel: true,
+        {
+          // scale: true,
+          gridIndex: 1,
+          axisLabel: { show: false },
+          axisLine: { show: false },
+          axisTick: { show: false },
+          splitLine: { show: false },
         },
-      },
+      ],
 
       series: [
         {
           type: "custom",
           renderItem: renderItem,
-          itemStyle: {
-            opacity: 0.8,
-          },
+
           encode: {
             x: [1, 2],
             y: 0,
           },
           data: data,
+        },
+        {
+          type: "bar",
+          barCategoryGap: "0",
+          xAxisIndex: 1,
+          yAxisIndex: 1,
+          itemStyle: {
+            color: "#757171",
+          },
+          data: bar_values,
+        },
+        {
+          type: "line",
+          xAxisIndex: 1,
+          yAxisIndex: 1,
+          smooth: true,
+          showSymbol: false,
+          lineStyle: {
+            width: 1,
+            color: "red",
+          },
+          // tooltip: {
+          //   valueFormatter: function (value) {
+          //     return value + ' °C';
+          //   }
+          // },
+          data: line_data,
         },
       ],
     };
