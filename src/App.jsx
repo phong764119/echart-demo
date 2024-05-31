@@ -273,7 +273,6 @@ function App() {
     let categories = ["Running", "Stopped", "Changeover", "Idle time"];
 
     function renderItem(params, api) {
-      console.log(api.value(0), api.value(1));
       let categoryIndex = api.value(0);
       let start = api.coord([api.value(1), categoryIndex]);
       let end = api.coord([api.value(2), categoryIndex]);
@@ -369,10 +368,11 @@ function App() {
           },
         },
         {
-          scale: true,
+          // scale: true,
+          type: "category",
           gridIndex: 1,
           data: bar_times,
-          boundaryGap: true,
+          boundaryGap: false,
           axisLabel: {
             show: false,
           },
