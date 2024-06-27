@@ -93,7 +93,7 @@ function convertMillisecToHHMM(milliseconds) {
 const data = [
   {
     name: "Idle time",
-    value: [3, getTime(12, "h"), getTime(13, "h"), getTime(1, "h")],
+    value: [4, getTime(12, "h"), getTime(13, "h"), getTime(1, "h")],
     itemStyle: {
       normal: {
         color: "#8FDBF3",
@@ -103,7 +103,7 @@ const data = [
   {
     name: "Idle time",
     value: [
-      3,
+      4,
       getTime(16, "h"),
       getTime(16, "h") + getTime(40, "m"),
       getTime(40, "m"),
@@ -117,7 +117,7 @@ const data = [
   {
     name: "Changeover",
     value: [
-      2,
+      3,
       getTime(15, "h") + getTime(10, "m"),
       getTime(15, "h") + getTime(10, "m") + getTime(10, "m"),
       getTime(10, "m"),
@@ -131,7 +131,7 @@ const data = [
   {
     name: "Stopped",
     value: [
-      1,
+      2,
       getTime(17, "h") + getTime(5, "m"),
       getTime(17, "h") + getTime(10, "m"),
       getTime(5, "m"),
@@ -145,7 +145,7 @@ const data = [
   {
     name: "Stopped",
     value: [
-      1,
+      2,
       getTime(19, "h") + getTime(10, "m"),
       getTime(19, "h") + getTime(20, "m"),
       getTime(10, "m"),
@@ -159,7 +159,7 @@ const data = [
   {
     name: "Stopped",
     value: [
-      1,
+      2,
       getTime(19, "h") + getTime(30, "m"),
       getTime(19, "h") + getTime(40, "m"),
       getTime(10, "m"),
@@ -173,7 +173,7 @@ const data = [
   {
     name: "Running",
     value: [
-      0,
+      1,
       getTime(13, "h"),
       getTime(13, "h") + getTime(90, "m") + getTime(10, "m"),
       getTime(10, "m"),
@@ -187,7 +187,7 @@ const data = [
   {
     name: "Running",
     value: [
-      0,
+      1,
       getTime(13, "h") + getTime(100, "m"),
       getTime(15, "h") + getTime(10, "m"),
       getTime(15, "h") +
@@ -203,7 +203,7 @@ const data = [
   {
     name: "Running",
     value: [
-      0,
+      1,
       getTime(15, "h") + getTime(20, "m"),
       getTime(16, "h"),
       getTime(40, "m"),
@@ -217,7 +217,7 @@ const data = [
   {
     name: "Running",
     value: [
-      0,
+      1,
       getTime(16, "h") + getTime(40, "m"),
       getTime(17, "h") + getTime(5, "m"),
       getTime(25, "m"),
@@ -231,7 +231,7 @@ const data = [
   {
     name: "Running",
     value: [
-      0,
+      1,
       getTime(17, "h") + getTime(10, "m"),
       getTime(19, "h") + getTime(10, "m"),
       getTime(19, "h") +
@@ -247,7 +247,7 @@ const data = [
   {
     name: "Running",
     value: [
-      0,
+      1,
       getTime(19, "h") + getTime(20, "m"),
       getTime(19, "h") + getTime(30, "m"),
       getTime(10, "m"),
@@ -270,7 +270,7 @@ function App() {
     let option;
 
     // let startTime = +new Date();
-    let categories = ["Running", "Stopped", "Changeover", "Idle time"];
+    let categories = ["", "Running", "Stopped", "Changeover", "Idle time"];
 
     function renderItem(params, api) {
       let categoryIndex = api.value(0);
@@ -325,87 +325,73 @@ function App() {
       dataZoom: [
         {
           type: "inside",
+          filterMode: "weakFilter",
           xAxisIndex: [0, 1],
-        },
-      ],
-      grid: [
-        {
-          height: 300,
-        },
-        {
-          top: 380,
-          height: 100,
-        },
-      ],
-      xAxis: [
-        {
-          gridIndex: 0,
-          min: getTime(12, "h"),
-          max: getTime(20, "h"),
-          scale: true,
-          position: "top",
-          axisLine: {
-            show: true,
-          },
-          minorTick: {
-            show: true,
-            length: 4,
-          },
-          axisTick: {
-            show: true,
-            length: 8,
-            alignWithLabel: true,
-          },
-          splitLine: {
-            show: true,
-          },
-          interval: getTime(1, "h"),
 
-          axisLabel: {
-            formatter: function (val) {
-              return convertMillisecToHHMM(val);
-            },
-          },
-        },
-        {
-          // scale: true,
-          type: "category",
-          gridIndex: 1,
-          data: bar_times,
-          boundaryGap: false,
-          axisLabel: {
-            show: false,
-          },
-          axisTick: { show: false },
-          axisLine: { show: false },
+          showDataShadow: false,
         },
       ],
-      yAxis: [
-        {
-          // scale: true,
-          data: categories,
-          type: "category",
-          axisLine: {
-            show: true,
-          },
-          // interval: 1,
-          splitLine: {
-            show: true,
-          },
-          axisTick: {
-            show: false,
-            // alignWithLabel: true,
+      grid: {
+        height: 400,
+      },
+      xAxis: {
+        gridIndex: 0,
+        min: getTime(12, "h"),
+        max: getTime(20, "h"),
+        scale: true,
+        position: "top",
+        axisLine: {
+          show: true,
+        },
+        minorTick: {
+          show: true,
+          length: 4,
+        },
+        axisTick: {
+          show: true,
+          length: 8,
+          alignWithLabel: true,
+        },
+        splitLine: {
+          show: true,
+        },
+        interval: getTime(1, "h"),
+
+        axisLabel: {
+          formatter: function (val) {
+            return convertMillisecToHHMM(val);
           },
         },
-        {
-          // scale: true,
-          gridIndex: 1,
-          axisLabel: { show: false },
-          axisLine: { show: false },
-          axisTick: { show: false },
-          splitLine: { show: false },
+      },
+      yAxis: {
+        // scale: true,
+        // min: 0,
+        max: function (value) {
+          console.log(value);
+          return value.max;
         },
-      ],
+        data: categories,
+        type: "category",
+        axisLine: {
+          show: true,
+        },
+        minorSplitLine: {
+          show: true,
+        },
+        splitLine: {
+          show: true,
+        },
+        // splitArea: {
+        //   show: true,
+        // },
+        axisTick: {
+          show: false,
+          // alignWithLabel: true,
+        },
+        // axisPointer: {
+        //   show: true,
+        // },
+      },
 
       series: [
         {
@@ -417,33 +403,6 @@ function App() {
             y: 0,
           },
           data: data,
-        },
-        {
-          type: "bar",
-          barCategoryGap: "0",
-          xAxisIndex: 1,
-          yAxisIndex: 1,
-          itemStyle: {
-            color: "#757171",
-          },
-          data: bar_values,
-        },
-        {
-          type: "line",
-          xAxisIndex: 1,
-          yAxisIndex: 1,
-          smooth: true,
-          showSymbol: false,
-          lineStyle: {
-            width: 1,
-            color: "red",
-          },
-          // tooltip: {
-          //   valueFormatter: function (value) {
-          //     return value + ' °C';
-          //   }
-          // },
-          data: line_data,
         },
       ],
     };
