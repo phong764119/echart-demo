@@ -22,8 +22,20 @@ const takt_data = [
 while (takt_data[takt_data.length - 1][2] < getTime(20, "h")) {
   let d = takt_data[takt_data.length - 1];
   let r = Math.floor(Math.random() * 101);
+  let c = d[2] + getTime(5, "m");
+  if (
+    c <= getTime(13, "h") ||
+    (c > getTime(15, "h") + getTime(10, "m") &&
+      c <= getTime(15, "h") + getTime(20, "m")) ||
+    (c > getTime(16, "h") && c <= getTime(16, "h") + getTime(40, "m")) ||
+    c == getTime(17, "h") + getTime(10, "m") ||
+    (c > getTime(19, "h") + getTime(10, "m") &&
+      c <= getTime(19, "h") + getTime(20, "m")) ||
+    c > getTime(19, "h") + getTime(30, "m")
+  )
+    r = 0;
   let t = r == 0 ? 0 : 80;
-  takt_data.push([r, d[2], d[2] + getTime(5, "m"), t]);
+  takt_data.push([r, d[2], c, t]);
 }
 
 function convertMillisecToHHMM(milliseconds) {
