@@ -15,64 +15,15 @@ const getTime = (n, t) => {
       return 0;
   }
 };
-const bar_times = [getTime(12, "h")];
-const bar_values = [];
-const line_data = [];
-while (bar_times[bar_times.length - 1] < getTime(20, "h")) {
-  let n = bar_times[bar_times.length - 1] + getTime(5, "m");
-  //
-  bar_times.push(n);
-  n = n - getTime(5, "m");
-  if (
-    n < getTime(13, "h") ||
-    (n >= getTime(15, "h") + getTime(10, "m") &&
-      n < getTime(15, "h") + getTime(20, "m")) ||
-    (n >= getTime(16, "h") && n < getTime(16, "h") + getTime(40, "m")) ||
-    (n >= getTime(17, "h") + getTime(5, "m") &&
-      n < getTime(17, "h") + getTime(10, "m")) ||
-    (n >= getTime(19, "h") + getTime(10, "m") &&
-      n < getTime(19, "h") + getTime(20, "m")) ||
-    n > getTime(19, "h") + getTime(30, "m")
-  ) {
-    bar_values.push(0);
-    line_data.push(0);
-  } else {
-    line_data.push(80);
-  }
-  if (n >= getTime(13, "h") && n < getTime(13, "h") + getTime(100, "m")) {
-    bar_values.push(80 + Math.floor(Math.random() * 11));
-  }
-  if (
-    n >= getTime(13, "h") + getTime(100, "m") &&
-    n < getTime(15, "h") + getTime(10, "m")
-  ) {
-    bar_values.push(80 - Math.floor(Math.random() * 11));
-  }
+const takt_data = [
+  [0, getTime(12, "h"), getTime(12, "h") + getTime(5, "m"), 0, 0],
+];
 
-  if (n >= getTime(15, "h") + getTime(20, "m") && n < getTime(16, "h")) {
-    bar_values.push(80 + Math.floor(Math.random() * 11));
-  }
-
-  if (
-    n >= getTime(16, "h") + getTime(40, "m") &&
-    n < getTime(17, "h") + getTime(5, "m")
-  ) {
-    bar_values.push(80 + Math.floor(Math.random() * 11));
-  }
-
-  if (
-    n >= getTime(17, "h") + getTime(10, "m") &&
-    n < getTime(19, "h") + getTime(10, "m")
-  ) {
-    bar_values.push(80 + Math.floor(Math.random() * 11));
-  }
-
-  if (
-    n >= getTime(19, "h") + getTime(20, "m") &&
-    n < getTime(19, "h") + getTime(30, "m")
-  ) {
-    bar_values.push(80 - Math.floor(Math.random() * 11));
-  }
+while (takt_data[takt_data.length - 1][2] < getTime(20, "h")) {
+  let d = takt_data[takt_data.length - 1];
+  let r = Math.floor(Math.random() * 101);
+  let t = r == 0 ? 0 : 80;
+  takt_data.push([r, d[2], d[2] + getTime(5, "m"), t]);
 }
 
 function convertMillisecToHHMM(milliseconds) {
@@ -93,7 +44,7 @@ function convertMillisecToHHMM(milliseconds) {
 const data = [
   {
     name: "Idle time",
-    value: [4, getTime(12, "h"), getTime(13, "h"), getTime(1, "h")],
+    value: [3, getTime(12, "h"), getTime(13, "h"), getTime(1, "h")],
     itemStyle: {
       normal: {
         color: "#8FDBF3",
@@ -103,7 +54,7 @@ const data = [
   {
     name: "Idle time",
     value: [
-      4,
+      3,
       getTime(16, "h"),
       getTime(16, "h") + getTime(40, "m"),
       getTime(40, "m"),
@@ -117,7 +68,7 @@ const data = [
   {
     name: "Changeover",
     value: [
-      3,
+      2,
       getTime(15, "h") + getTime(10, "m"),
       getTime(15, "h") + getTime(10, "m") + getTime(10, "m"),
       getTime(10, "m"),
@@ -131,7 +82,7 @@ const data = [
   {
     name: "Stopped",
     value: [
-      2,
+      1,
       getTime(17, "h") + getTime(5, "m"),
       getTime(17, "h") + getTime(10, "m"),
       getTime(5, "m"),
@@ -145,7 +96,7 @@ const data = [
   {
     name: "Stopped",
     value: [
-      2,
+      1,
       getTime(19, "h") + getTime(10, "m"),
       getTime(19, "h") + getTime(20, "m"),
       getTime(10, "m"),
@@ -159,7 +110,7 @@ const data = [
   {
     name: "Stopped",
     value: [
-      2,
+      1,
       getTime(19, "h") + getTime(30, "m"),
       getTime(19, "h") + getTime(40, "m"),
       getTime(10, "m"),
@@ -173,7 +124,7 @@ const data = [
   {
     name: "Running",
     value: [
-      1,
+      0,
       getTime(13, "h"),
       getTime(13, "h") + getTime(90, "m") + getTime(10, "m"),
       getTime(10, "m"),
@@ -187,7 +138,7 @@ const data = [
   {
     name: "Running",
     value: [
-      1,
+      0,
       getTime(13, "h") + getTime(100, "m"),
       getTime(15, "h") + getTime(10, "m"),
       getTime(15, "h") +
@@ -203,7 +154,7 @@ const data = [
   {
     name: "Running",
     value: [
-      1,
+      0,
       getTime(15, "h") + getTime(20, "m"),
       getTime(16, "h"),
       getTime(40, "m"),
@@ -217,7 +168,7 @@ const data = [
   {
     name: "Running",
     value: [
-      1,
+      0,
       getTime(16, "h") + getTime(40, "m"),
       getTime(17, "h") + getTime(5, "m"),
       getTime(25, "m"),
@@ -231,7 +182,7 @@ const data = [
   {
     name: "Running",
     value: [
-      1,
+      0,
       getTime(17, "h") + getTime(10, "m"),
       getTime(19, "h") + getTime(10, "m"),
       getTime(19, "h") +
@@ -247,7 +198,7 @@ const data = [
   {
     name: "Running",
     value: [
-      1,
+      0,
       getTime(19, "h") + getTime(20, "m"),
       getTime(19, "h") + getTime(30, "m"),
       getTime(10, "m"),
@@ -270,7 +221,53 @@ function App() {
     let option;
 
     // let startTime = +new Date();
-    let categories = ["", "Running", "Stopped", "Changeover", "Idle time"];
+    let categories = ["Running", "Stopped", "Changeover", "Idle time"];
+
+    function renderTakt(params, api) {
+      let yVal = api.value(0);
+      let start = api.coord([api.value(1), yVal]);
+      let end = api.coord([api.value(2), yVal]);
+      const [x1, y1] = api.coord([api.value(1), api.value(3)]);
+      const [x2, y2] = api.coord([api.value(2), api.value(3)]);
+      let height = api.size([0, yVal])[1];
+      // graphic.Line();
+      let rectShape = graphic.clipRectByRect(
+        {
+          x: start[0],
+          y: start[1],
+          width: end[0] - start[0],
+          height: height,
+        },
+        {
+          x: params.coordSys.x,
+          y: params.coordSys.y,
+          width: params.coordSys.width,
+          height: params.coordSys.height,
+        }
+      );
+
+      return {
+        type: "group",
+        children: [
+          {
+            type: "rect",
+            transition: ["shape"],
+            shape: rectShape,
+            style: {
+              fill: "#757171",
+            },
+          },
+          {
+            type: "line",
+            shape: { x1, y1, x2, y2 },
+            style: {
+              stroke: "red",
+              lineWidth: 1,
+            },
+          },
+        ],
+      };
+    }
 
     function renderItem(params, api) {
       let categoryIndex = api.value(0);
@@ -324,74 +321,92 @@ function App() {
       },
       dataZoom: [
         {
-          type: "inside",
           filterMode: "weakFilter",
-          xAxisIndex: [0, 1],
 
           showDataShadow: false,
+
+          type: "inside",
+          xAxisIndex: [0, 1],
         },
       ],
-      grid: {
-        height: 400,
-      },
-      xAxis: {
-        gridIndex: 0,
-        min: getTime(12, "h"),
-        max: getTime(20, "h"),
-        scale: true,
-        position: "top",
-        axisLine: {
-          show: true,
+      grid: [
+        {
+          height: 300,
         },
-        minorTick: {
-          show: true,
-          length: 4,
+        {
+          top: 380,
+          height: 100,
         },
-        axisTick: {
-          show: true,
-          length: 8,
-          alignWithLabel: true,
-        },
-        splitLine: {
-          show: true,
-        },
-        interval: getTime(1, "h"),
+      ],
+      xAxis: [
+        {
+          gridIndex: 0,
+          min: getTime(12, "h"),
+          max: getTime(20, "h"),
+          scale: true,
+          position: "top",
+          axisLine: {
+            show: true,
+          },
+          minorTick: {
+            show: true,
+            length: 4,
+          },
+          axisTick: {
+            show: true,
+            length: 8,
+            alignWithLabel: true,
+          },
+          splitLine: {
+            show: true,
+          },
+          interval: getTime(1, "h"),
 
-        axisLabel: {
-          formatter: function (val) {
-            return convertMillisecToHHMM(val);
+          axisLabel: {
+            formatter: function (val) {
+              return convertMillisecToHHMM(val);
+            },
           },
         },
-      },
-      yAxis: {
-        // scale: true,
-        // min: 0,
-        max: function (value) {
-          console.log(value);
-          return value.max;
+        {
+          scale: true,
+          gridIndex: 1,
+          min: getTime(12, "h"),
+          max: getTime(20, "h"),
+          axisLabel: { show: false },
+          splitLine: { show: false },
+          axisTick: { show: false },
+          // axisLine: { show: false },
         },
-        data: categories,
-        type: "category",
-        axisLine: {
-          show: true,
+      ],
+      yAxis: [
+        {
+          gridIndex: 0,
+          // scale: true,
+          data: categories,
+          type: "category",
+          axisLine: {
+            show: true,
+          },
+          // interval: 1,
+          splitLine: {
+            show: true,
+          },
+          axisTick: {
+            show: false,
+            // alignWithLabel: true,
+          },
         },
-        minorSplitLine: {
-          show: true,
+        {
+          // scale: true,
+          // data: ["aaa"],
+          gridIndex: 1,
+          axisLabel: { show: false },
+          axisLine: { show: false },
+          axisTick: { show: false },
+          splitLine: { show: false },
         },
-        splitLine: {
-          show: true,
-        },
-        // splitArea: {
-        //   show: true,
-        // },
-        axisTick: {
-          show: false,
-          // alignWithLabel: true,
-        },
-        // axisPointer: {
-        //   show: true,
-        // },
-      },
+      ],
 
       series: [
         {
@@ -404,6 +419,39 @@ function App() {
           },
           data: data,
         },
+        {
+          type: "custom",
+          renderItem: renderTakt,
+          encode: {
+            x: [1, 2],
+            y: 0,
+          },
+          data: takt_data,
+          xAxisIndex: 1,
+          yAxisIndex: 1,
+        },
+        // {
+        //   type: "bar",
+        //   barCategoryGap: "0",
+        //   xAxisIndex: 1,
+        //   yAxisIndex: 1,
+        //   itemStyle: {
+        //     color: "#757171",
+        //   },
+        //   data: bar_values,
+        // },
+        // {
+        //   type: "line",
+        //   xAxisIndex: 1,
+        //   yAxisIndex: 1,
+        //   smooth: true,
+        //   showSymbol: false,
+        //   lineStyle: {
+        //     width: 1,
+        //     color: "red",
+        //   },
+        //   data: line_data,
+        // },
       ],
     };
     myChart.setOption(option);
